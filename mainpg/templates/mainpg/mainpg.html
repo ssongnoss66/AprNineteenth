@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<style>
+  body {
+    margin: 5rem;
+  }
+</style>
+{% endblock style %}
+
+{% block content %}
+<h1>mainpg MAINPG</h1>
+<hr>
+<h2>Hello, {{ user }}</h2>
+{% if user.is_authenticated %}
+<div class="d-flex gap-2">
+  <form action="{% url 'accounts:logout' %}" method="POST">
+    {% csrf_token %}
+    <input type="submit" class="btn btn-primary" value="LOGOUT">
+  </form>
+  <form action="{% url 'accounts:signout' %}" method="POST">
+    {% csrf_token %}
+    <input type="submit" class="btn btn-secondary" value="SIGNOUT">
+  </form>
+  <a href="{% url 'accounts:update' %}" class="btn btn-dark">UPDATE</a>
+</div>
+{% else %}
+<a href="{% url 'accounts:login' %}" class="btn btn-primary">LOGIN</a>
+<a href="{% url 'accounts:signup' %}" class="btn btn-secondary">SIGNUP</a>
+{% endif %}
+{% endblock content %}
