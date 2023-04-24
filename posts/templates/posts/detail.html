@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<style>
+  body {
+    margin: 5rem;
+  }
+</style>
+{% endblock style %}
+
+{% block content %}
+<h1>posts DETAIL</h1>
+<hr>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+  <label class="form-check-label" for="flexRadioDefault1">
+    {{ post.select1_content }}
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+  <label class="form-check-label" for="flexRadioDefault2">
+    {{ post.select2_content }}
+  </label>
+</div>
+{% endblock content %}
