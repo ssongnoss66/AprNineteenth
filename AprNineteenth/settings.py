@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'accounts',
     'mainpg',
     'posts',
+    'bootstrap5',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

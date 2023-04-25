@@ -13,19 +13,44 @@
 <hr>
 <h2>Hello, {{ user }}</h2>
 {% if user.is_authenticated %}
-<div class="d-flex gap-2">
-  <form action="{% url 'accounts:logout' %}" method="POST">
-    {% csrf_token %}
-    <input type="submit" class="btn btn-primary" value="LOGOUT">
-  </form>
-  <form action="{% url 'accounts:signout' %}" method="POST">
-    {% csrf_token %}
-    <input type="submit" class="btn btn-secondary" value="SIGNOUT">
-  </form>
-  <a href="{% url 'accounts:update' %}" class="btn btn-dark">UPDATE</a>
+<div class="d-grid gap-2 mb-2">
+  <a href="{% url 'posts:index' %}" class="btn btn-outline-primary">POSTS</a>
+</div>
+<div class="row">
+  <div class="col-4">
+    <form action="{% url 'accounts:logout' %}" method="POST">
+      {% csrf_token %}
+      <div class="d-grid gap-2 mb-2">
+        <input type="submit" class="btn btn-primary" value="LOGOUT">
+      </div>
+    </form>
+  </div>
+  <div class="col-4">
+    <form action="{% url 'accounts:signout' %}" method="POST">
+      {% csrf_token %}
+      <div class="d-grid gap-2 mb-2">
+        <input type="submit" class="btn btn-secondary" value="SIGNOUT">
+      </div>
+    </form>
+  </div>
+  <div class="col-4">
+    <div class="d-grid gap-2 mb-2">
+      <a href="{% url 'accounts:update' %}" class="btn btn-dark">UPDATE</a>
+    </div>
+  </div>
 </div>
 {% else %}
-<a href="{% url 'accounts:login' %}" class="btn btn-primary">LOGIN</a>
-<a href="{% url 'accounts:signup' %}" class="btn btn-secondary">SIGNUP</a>
+<div class="row">
+  <div class="col-6">
+    <div class="d-grid gap-2 mb-2">
+      <a href="{% url 'accounts:login' %}" class="btn btn-primary">LOGIN</a>
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="d-grid gap-2 mb-2">
+      <a href="{% url 'accounts:signup' %}" class="btn btn-secondary">SIGNUP</a>
+    </div>
+  </div>
+</div>
 {% endif %}
 {% endblock content %}

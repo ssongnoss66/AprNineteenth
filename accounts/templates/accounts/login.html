@@ -13,7 +13,12 @@
 <hr>
 <form action="{% url 'accounts:login' %}" method = "POST">
   {% csrf_token %}
-  {{ form.as_p }}
+  {% for field in form %}
+  <div class="input-group mb-3">
+    <span class="input-group-text" style = "width: 7rem;" id="{{ field.auto_id }}">{{ field.label }}</span>
+    {{ field }}
+  </div>
+  {% endfor %}
   <input type="submit" class="btn btn-primary">
 </form>
 {% endblock content %}

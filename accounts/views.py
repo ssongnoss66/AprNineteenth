@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, CustomUserChangeForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm, CustomAuthenticationForm
 from django.contrib.auth import login as auth_login, logout as auth_logout, get_user_model, update_session_auth_hash
-from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from .models import User
 
@@ -9,12 +9,12 @@ def login(request):
     if request.user.is_authenticated:
         return redirect('mainpg:mainpg')
     if request.method == 'POST':
-        form = AuthenticationForm(request, request.POST)
+        form = CustomAuthenticationForm(request, request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
             return redirect('mainpg:mainpg')
     else:
-        form = AuthenticationForm()
+        form = CustomAuthenticationForm()
     context = {
         'form': form,
     }
@@ -63,12 +63,12 @@ def update(request):
 
 @login_required
 def change_password(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
-            return redirect('mainpg:mainpg')
+            return redirect('posts:index')
     else:
         form = PasswordChangeForm(request.user)
     context = {

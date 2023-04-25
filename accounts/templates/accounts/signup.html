@@ -13,7 +13,14 @@
 <hr>
 <form action="{% url 'accounts:signup' %}" method="POST">
   {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" class="btn btn-primary">
+  {% for field in form %}
+  <div class="input-group mb-3">
+    <span class="input-group-text" style = "width: 7rem;" id="{{ field.auto_id }}">{{ field.label }}</span>
+    {{ field }}
+  </div>
+  {% endfor %}
+  <div class="d-grid gap-2 mb-2">
+    <input type="submit" class="btn btn-outline-primary">
+  </div>
 </form>
 {% endblock content %}
