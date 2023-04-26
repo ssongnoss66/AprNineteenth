@@ -11,16 +11,44 @@
 {% block content %}
 <h1>posts DETAIL</h1>
 <hr>
-<div class="form-check">
-  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-  <label class="form-check-label" for="flexRadioDefault1">
-    {{ post.select1_content }}
-  </label>
+
+<div>
+  <form id="select-form" data-post-id="{{ post.pk }}">
+    {% csrf_token %}
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="selectContent" data-post-str="{{ post.select1_Content }}">
+      <label class="form-check-label" for="selectContent1">
+        {{ post.select1_content }}
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="selectContent" id="selectContent2" data-post-str="{{ post.select2_Content }}">
+      <label class="form-check-label" for="selectContent2">
+        {{ post.select2_content }}
+      </label>
+    </div>
+    <input type="submit" value="SUBMIT" class="btn btn-primary">
+  </form>
 </div>
-<div class="form-check">
-  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-  <label class="form-check-label" for="flexRadioDefault2">
-    {{ post.select2_content }}
-  </label>
-</div>
+
+<script>
+ const form = document.querySelector('#select-form')
+ const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+ form.addEventListener('submit', function (event) {
+    event.preventDefault()
+    var radios = document.getElementsByName('selectContent');
+    for (var radio of radios) {
+        if (radio.checked) {
+            const postId = event.target.dataset.postId
+            const postStr = event.target.dataset.postStr
+            axios({
+                method: 'post',
+                url: '/posts/${postId}/answer/${postStr}',
+                headers: {'X-CSRFToken': csrftoken},
+            })
+        }
+    }
+    
+  })
+</script>
 {% endblock content %}
