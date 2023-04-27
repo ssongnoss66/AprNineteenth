@@ -11,44 +11,57 @@
 {% block content %}
 <h1>posts DETAIL</h1>
 <hr>
-
-<div>
-  <form id="select-form" data-post-id="{{ post.pk }}">
-    {% csrf_token %}
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="selectContent" data-post-str="{{ post.select1_Content }}">
-      <label class="form-check-label" for="selectContent1">
-        {{ post.select1_content }}
-      </label>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="selectContent" id="selectContent2" data-post-str="{{ post.select2_Content }}">
-      <label class="form-check-label" for="selectContent2">
-        {{ post.select2_content }}
-      </label>
-    </div>
-    <input type="submit" value="SUBMIT" class="btn btn-primary">
-  </form>
+<div class="d-flex gap-3">
+  <div class="d-flex flex-column gap-3 w-100">
+    <form id="select-form1" data-post-id="{{ post.pk }}" data-post-content="{{ post.select1_content }}">
+      {% csrf_token %}
+      {% if user in post.select1_users.all %}
+        <input id="select1" type="submit" class="btn btn-light fw-bold fs-4" style="background-color: #d3d4d5;" value = "{{ post.select1_content }}">
+      {% else %}
+        <input id="select1" type="submit" class="btn btn-light fw-bold fs-4" value = "{{ post.select1_content }}">
+      {% endif %}
+    </form>
+  </div>
+  <div class="d-flex flex-column gap-3 w-100">
+    <form id="select-form2" data-post-id="{{ post.pk }}" data-post-content="{{ post.select2_content }}">
+      {% csrf_token %}
+      {% if user in post.select2_users.all %}
+        <input id="select2" type="submit" class="btn btn-light fw-bold fs-4" style="background-color: #d3d4d5;" value = "{{ post.select2_content }}">
+      {% else %}
+        <input id="select2" type="submit" class="btn btn-light fw-bold fs-4" value = "{{ post.select2_content }}">
+      {% endif %}
+    </form>
+  </div>
 </div>
-
+{% endblock content %}
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
- const form = document.querySelector('#select-form')
- const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
- form.addEventListener('submit', function (event) {
+  const form1 = document.querySelector('#select-form1')
+  const form2 = document.querySelector('#select-form2')
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+  form1.addEventListener('submit', function (event) {
     event.preventDefault()
-    var radios = document.getElementsByName('selectContent');
-    for (var radio of radios) {
-        if (radio.checked) {
-            const postId = event.target.dataset.postId
-            const postStr = event.target.dataset.postStr
-            axios({
-                method: 'post',
-                url: '/posts/${postId}/answer/${postStr}',
-                headers: {'X-CSRFToken': csrftoken},
-            })
-        }
-    }
+    const postId = event.target.dataset.postId
+    const postContent = event.target.dataset.postContent
     
+    axios({
+      method: 'post',
+      url: `/posts/${postId}/answer/${postContent}/`,
+      headers: {'X-CSRFToken': csrftoken},
+    })
+  })
+
+  form2.addEventListener('submit', function (event) {
+    event.preventDefault()
+    const postId = event.target.dataset.postId
+    const postContent = event.target.dataset.postContent
+    
+    axios({
+      method: 'post',
+      url: `/posts/${postId}/answer/${postContent}/`,
+      headers: {'X-CSRFToken': csrftoken},
+    })
   })
 </script>
-{% endblock content %}
+{% endblock script %}

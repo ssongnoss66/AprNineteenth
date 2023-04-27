@@ -17,8 +17,10 @@
   <div class="input-group mb-3">
     <span class="input-group-text" style = "width: 7rem;" id="{{ field.auto_id }}">{{ field.label }}</span>
     {{ field }}
-  </div>
+  </div> 
   {% endfor %}
-  <input type="submit" class="btn btn-primary">
+  <div class="d-grid gap-2 mb-2">
+    <input type="submit" class="btn btn-primary">
+  </div>
 </form>
 {% endblock content %}

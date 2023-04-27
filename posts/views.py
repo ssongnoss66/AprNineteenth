@@ -34,15 +34,22 @@ def detail(request, post_pk):
     }
     return render(request, 'posts/detail.html', context)
 
+@login_required
 def answer(request, post_pk, answer):
-    post = Post.objects.get(pk=post_pk)
-    if answer == post.select1_content:
-        post.select1_user.add(request.user)
-        select = 'one'
-    else:
-        post.select2_user.add(request.user)
-        select = 'two'
-    context = {
-        'select': select,
-    }
-    return JsonResponse(context)
+    if request.method == "POST":
+        post = Post.objects.get(pk=post_pk)
+        user = request.user
+        if user in post.select1_users.all() or user in post.select2_users.all():
+            pass
+        else:
+            if answer == post.select1_content:
+                post.select1_users.add(user)
+                is_select = True
+            else:
+                post.select2_users.add(user)
+                is_select = False
+            context = {
+                'is_select': is_select,
+            }
+            return JsonResponse(context)
+    return redirect('posts:detail')
